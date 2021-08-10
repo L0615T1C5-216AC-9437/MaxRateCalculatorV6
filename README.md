@@ -6,8 +6,7 @@
 A mindustry mod that allows you to calculate the efficiency, bottle neck and ratios of your machinations.  
 *may or may not work with modded items / blocks*
 
-<img src="docs/CalculateReal.png" alt="MaxRatio" width="400"/>
-<img src="docs/CalculateMax.png" alt="MaxRatio" width="400"/>
+<img src="docs/CalculateReal.png" alt="MaxRatio" width="400"/><img src="docs/CalculateMax.png" alt="MaxRatio" width="400"/>
 
 ## Installation Guide
 1. Download the latest mod verion in [#Releases](https://github.com/L0615T1C5-216AC-9437/MaxRateCalculator/releases).
