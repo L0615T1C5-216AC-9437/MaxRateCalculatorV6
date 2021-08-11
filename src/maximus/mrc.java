@@ -132,11 +132,12 @@ public class mrc extends Mod {
             if (Core.input.keyRelease(key) && x1 != -1 && y1 != -1) {
                 x2 = rawCursorX;
                 y2 = rawCursorY;
+                String infoMessage = "";
                 try {
                     calculation cal = new calculateMax(x1, y1, x2, y2);
                     cal.calculate();
                     if (!cal.formattedMessage.isEmpty()) {
-                        cal.callInfoMessage();
+                        infoMessage += cal.formattedMessage + "\n\n[white]";
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -145,10 +146,13 @@ public class mrc extends Mod {
                     calculation cal = new calculateReal(x1, y1, x2, y2);
                     cal.calculate();
                     if (!cal.formattedMessage.isEmpty()) {
-                        cal.callInfoMessage();
+                        infoMessage += cal.formattedMessage;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+                if (!infoMessage.isEmpty()) {
+                    Vars.ui.showInfo(infoMessage);
                 }
                 x1 = -1;
                 y1 = -1;

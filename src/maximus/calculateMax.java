@@ -221,7 +221,7 @@ public class calculateMax extends mrc.calculation {
                 maxPowerAverageN += p;
             }
         }
-        DecimalFormat df = new DecimalFormat("0000.00");
+        DecimalFormat df = new DecimalFormat("0.00");
         StringBuilder builder = new StringBuilder(translatedStringLabel);
         for (Item i : maxItemAverages.keySet()) {
             averages ia = maxItemAverages.get(i);
