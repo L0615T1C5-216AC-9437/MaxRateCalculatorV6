@@ -49,6 +49,7 @@ public class mrc extends Mod {
             }
         });
         Events.on(ClientLoadEvent.class, event -> {
+            //load language pack
             Locale locale;
             String loc = settings.getString("locale");
             if(loc.equals("default")){
@@ -78,6 +79,15 @@ public class mrc extends Mod {
 
             calculateMax.translatedStringLabel = mrc.bundle.getString("calculateMaximum") + "\n[orange]=========================[white]";
 
+            //add setting to core bundle
+            var coreBundle = Core.bundle.getProperties();
+            coreBundle.put("setting.mrcSplitInfoMessage.name", mrc.bundle.getString("mrc.settings.SplitInfoMessage"));
+            coreBundle.put("setting.mrcShowZeroAverageMath.name", mrc.bundle.getString("mrc.settings.ShowZeroAverageMath"));
+            Core.bundle.setProperties(coreBundle);
+            //add custom settings
+            Core.settings.put("uiscalechanged", false);//stop annoying "ui scale changed" message
+            addBooleanGameSetting("mrcSplitInfoMessage", false);
+            addBooleanGameSetting("mrcShowZeroAverageMath", true);
 
             if (!Core.settings.has("mrcFirstTime")) {
                 Vars.ui.showInfo(bundle.getString("mrc.firstTimeMessage"));
@@ -96,11 +106,16 @@ public class mrc extends Mod {
                 x2 = rawCursorX;
                 y2 = rawCursorY;
                 String infoMessage = "";
+                boolean split = settings.getBool("mrcSplitInfoMessage", false);
                 try {
                     calculation cal = new calculateMax(x1, y1, x2, y2);
                     cal.calculate();
                     if (!cal.formattedMessage.isEmpty()) {
-                        infoMessage += cal.formattedMessage + "\n\n[white]";
+                        if (split) {
+                            cal.callInfoMessage();
+                        } else {
+                            infoMessage += cal.formattedMessage + "\n\n[white]";
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -109,12 +124,16 @@ public class mrc extends Mod {
                     calculation cal = new calculateReal(x1, y1, x2, y2);
                     cal.calculate();
                     if (!cal.formattedMessage.isEmpty()) {
-                        infoMessage += cal.formattedMessage;
+                        if (split) {
+                            cal.callInfoMessage();
+                        } else {
+                            infoMessage += cal.formattedMessage;
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (!infoMessage.isEmpty()) {
+                if (!split && !infoMessage.isEmpty()) {
                     Vars.ui.showInfo(infoMessage);
                 }
                 x1 = -1;
@@ -200,5 +219,9 @@ public class mrc extends Mod {
         public void callInfoMessage() {
             Vars.ui.showInfo(formattedMessage);
         }
+    }
+
+    public static void addBooleanGameSetting(String key, boolean defaultBooleanValue){
+        Vars.ui.settings.game.checkPref(key, Core.settings.getBool(key, defaultBooleanValue));
     }
 }
