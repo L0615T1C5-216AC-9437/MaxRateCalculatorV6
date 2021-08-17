@@ -10,7 +10,6 @@ import arc.input.KeyCode;
 import arc.util.Log;
 import mindustry.Vars;
 import mindustry.content.Blocks;
-import mindustry.content.Items;
 import mindustry.core.World;
 import mindustry.game.EventType;
 import mindustry.game.EventType.ClientLoadEvent;
@@ -19,7 +18,6 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
 import mindustry.input.Placement;
 import mindustry.mod.Mod;
-import mindustry.type.Item;
 import mindustry.world.Block;
 import mindustry.world.Build;
 import mindustry.world.Tile;
@@ -34,7 +32,6 @@ import static mindustry.Vars.world;
 public class mrc extends Mod {
     private static final KeyCode key = KeyCode.backtick;
     private static final int maxSelection = 500;
-    private static final Item[] allItems = new Item[] { Items.copper, Items.lead, Items.metaglass, Items.graphite, Items.sand, Items.copper, Items.titanium, Items.thorium, Items.scrap, Items.silicon, Items.plastanium, Items.phaseFabric, Items.surgeAlloy, Items.sporePod, Items.blastCompound, Items.pyratite};
     public static ResourceBundle bundle;
     //translations
     public static String translatedStringPower = "";
@@ -82,40 +79,6 @@ public class mrc extends Mod {
             calculateMax.translatedStringLabel = mrc.bundle.getString("calculateMaximum") + "\n[orange]=========================[white]";
 
 
-            //
-            /*
-            Menus.registerMenu(69420, (player, selection) -> {
-                if (selection < 0) return;
-                if (selection < 16) {
-                    calculateMax(x1, y1, x2, y2, allItems[selection]);
-                } else {
-                    calculation cal = null;
-                    switch (selection) {
-                        case 16 -> {
-                            try {
-                                cal = new calculateMax(x1, y1, x2, y2);
-                                cal.calculate();
-                            } catch (Exception e) {
-                                Log.err(e);
-                            }
-                        }
-                        case 17 -> {
-                            try {
-                                cal = new calculateReal(x1, y1, x2, y2);
-                                cal.calculate();
-                            } catch (Exception e) {
-                                Log.err(e);
-                            }
-                        }
-                    }
-                    if (cal != null && !cal.formattedMessage.isEmpty()) {
-                        cal.callLabel();
-                    } else {
-                        Log.err("cal null or format message bad");
-                    }
-                }
-            });
-             */
             if (!Core.settings.has("mrcFirstTime")) {
                 Vars.ui.showInfo(bundle.getString("mrc.firstTimeMessage"));
                 Core.settings.put("mrcFirstTime", false);
@@ -165,23 +128,6 @@ public class mrc extends Mod {
     @Override
     public void loadContent(){
 		Log.info("Loading the Max Rate Calculator!");
-    }
-    //calculation
-    private static void calculateMax(int x1, int y1, int x2, int y2, Item out) {
-        int xl = Math.min(x1, x2);
-        int xr = Math.max(x1, x2);
-        int yb = Math.min(y1, y2);
-        int yt = Math.max(y1, y2);
-    }
-
-    //menu formatter
-    public static String[][] menuButtonFormatter(String input) {
-        String[] rows = input.split("\n");
-        String[][] out = new String[rows.length][];
-        for (int r = 0; r < rows.length; r++) {
-            out[r] = rows[r].split("\t");
-        }
-        return out;
     }
     //anuke
     int tileX(float cursorX) {
