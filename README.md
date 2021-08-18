@@ -9,7 +9,7 @@ A mindustry mod that allows you to calculate the efficiency, bottle neck and rat
 <img src="docs/CalculateReal.png" alt="RealRatio" width="400"/><img src="docs/CalculateMax.png" alt="MaxRatio" width="400"/>
 
 ## Installation Guide
-1. Download the latest mod verion in [#Releases](https://github.com/L0615T1C5-216AC-9437/MaxRateCalculator/releases).
+1. Download the latest mod verion in [#Releases](https://github.com/L0615T1C5-216AC-9437/MaxRateCalculatorV6/releases).
 2. Open mindustry, go to `mods` section, select `Open Folder`
 3. Move the mod (`Jar` file) into the folder
 4. Reopen mindustry.
