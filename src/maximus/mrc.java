@@ -81,11 +81,13 @@ public class mrc extends Mod {
 
             //add setting to core bundle
             var coreBundle = Core.bundle.getProperties();
+            coreBundle.put("setting.mrcSendInfoMessage.name", mrc.bundle.getString("mrc.settings.SendInfoMessage"));
             coreBundle.put("setting.mrcSplitInfoMessage.name", mrc.bundle.getString("mrc.settings.SplitInfoMessage"));
             coreBundle.put("setting.mrcShowZeroAverageMath.name", mrc.bundle.getString("mrc.settings.ShowZeroAverageMath"));
             Core.bundle.setProperties(coreBundle);
             //add custom settings
             Core.settings.put("uiscalechanged", false);//stop annoying "ui scale changed" message
+            addBooleanGameSetting("mrcSendInfoMessage", false);
             addBooleanGameSetting("mrcSplitInfoMessage", false);
             addBooleanGameSetting("mrcShowZeroAverageMath", true);
 
@@ -107,12 +109,17 @@ public class mrc extends Mod {
                 y2 = rawCursorY;
                 String infoMessage = "";
                 boolean split = settings.getBool("mrcSplitInfoMessage", false);
+                calculation cal = null;
                 try {
-                    calculation cal = new calculateMax(x1, y1, x2, y2);
+                    cal = new calculateMax(x1, y1, x2, y2);
                     cal.calculate();
                     if (!cal.formattedMessage.isEmpty()) {
                         if (split) {
-                            cal.callInfoMessage();
+                            if (settings.getBool("mrcSendInfoMessage", false)) {
+                                cal.callInfoMessage();
+                            } else {
+                                cal.callLabel();
+                            }
                         } else {
                             infoMessage += cal.formattedMessage + "\n\n[white]";
                         }
@@ -121,11 +128,15 @@ public class mrc extends Mod {
                     e.printStackTrace();
                 }
                 try {
-                    calculation cal = new calculateReal(x1, y1, x2, y2);
+                    cal = new calculateReal(x1, y1, x2, y2);
                     cal.calculate();
                     if (!cal.formattedMessage.isEmpty()) {
                         if (split) {
-                            cal.callInfoMessage();
+                            if (settings.getBool("mrcSendInfoMessage", false)) {
+                                cal.callInfoMessage();
+                            } else {
+                                cal.callLabel();
+                            }
                         } else {
                             infoMessage += cal.formattedMessage;
                         }
@@ -134,7 +145,11 @@ public class mrc extends Mod {
                     e.printStackTrace();
                 }
                 if (!split && !infoMessage.isEmpty()) {
-                    Vars.ui.showInfo(infoMessage);
+                    if (settings.getBool("mrcSendInfoMessage", false)) {
+                        Vars.ui.showInfo(infoMessage);
+                    } else {
+                        Vars.ui.showLabel(infoMessage, 30, (x1 + x2) * 4f, (cal.yb - 5) * 8f);
+                    }
                 }
                 x1 = -1;
                 y1 = -1;
@@ -214,6 +229,10 @@ public class mrc extends Mod {
 
         public void calculate() {
 
+        }
+
+        public void callLabel() {
+            Vars.ui.showLabel(formattedMessage, 30, (xl + xr) * 4f, (yb - 5) * 8f);
         }
 
         public void callInfoMessage() {
