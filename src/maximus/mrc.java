@@ -45,7 +45,7 @@ public class mrc extends Mod {
         //listen for game load event
         Events.run(Trigger.draw, () -> {
             if (Core.input.keyDown(key) && x1 != -1 && y1 != -1) {
-                drawSelection(x1, y1, tileX(Core.input.mouseX()), tileY(Core.input.mouseY()), maxSelection);
+                drawSelection(x1, y1, tileX(Core.input.mouseX()), tileY(Core.input.mouseY()));
             }
         });
         Events.on(ClientLoadEvent.class, event -> {
@@ -74,10 +74,9 @@ public class mrc extends Mod {
             translatedStringPower = Core.bundle.get("bar.power");
             translatedStringOptional = mrc.bundle.getString("optional");
 
-            calculateReal.translatedStringLabel = mrc.bundle.getString("calculateReal") + mrc.bundle.getString("calculateReal.label");
-            calculateReal.translatedStringPowerGeneration = mrc.bundle.getString("powerGeneration");
-
-            calculateMax.translatedStringLabel = mrc.bundle.getString("calculateMaximum") + "\n[orange]=========================[white]";
+            calculator.translatedStringRealTitle = mrc.bundle.getString("calculateReal") + mrc.bundle.getString("calculateReal.label");
+            calculator.translatedStringPowerGeneration = mrc.bundle.getString("powerGeneration");
+            calculator.translatedStringMaxTitle = mrc.bundle.getString("calculateMaximum") + "\n[orange]=========================[white]";
 
             //add setting to core bundle
             var coreBundle = Core.bundle.getProperties();
@@ -109,10 +108,9 @@ public class mrc extends Mod {
                 y2 = rawCursorY;
                 String infoMessage = "";
                 boolean split = settings.getBool("mrcSplitInfoMessage", false);
-                calculation cal = null;
+                calculator cal = null;
                 try {
-                    cal = new calculateMax(x1, y1, x2, y2);
-                    cal.calculate();
+                    cal = new calculator(x1, y1, x2, y2, false);
                     if (!cal.formattedMessage.isEmpty()) {
                         if (split) {
                             if (settings.getBool("mrcSendInfoMessage", false)) {
@@ -128,8 +126,7 @@ public class mrc extends Mod {
                     e.printStackTrace();
                 }
                 try {
-                    cal = new calculateReal(x1, y1, x2, y2);
-                    cal.calculate();
+                    cal = new calculator(x1, y1, x2, y2, true);
                     if (!cal.formattedMessage.isEmpty()) {
                         if (split) {
                             if (settings.getBool("mrcSendInfoMessage", false)) {
@@ -176,11 +173,11 @@ public class mrc extends Mod {
         return Build.validBreak(player.team(), x, y);
     }
     //anuke likes to draw stuff
-    void drawSelection(int x1, int y1, int x2, int y2, int maxLength) {
+    void drawSelection(int x1, int y1, int x2, int y2) {
         //todo: fix weird bloom effect
         Draw.reset();
-        Placement.NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, maxLength, 1f);
-        Placement.NormalizeResult dresult = Placement.normalizeArea(x1, y1, x2, y2, 0, false, maxLength);
+        Placement.NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, mrc.maxSelection, 1f);
+        Placement.NormalizeResult dresult = Placement.normalizeArea(x1, y1, x2, y2, 0, false, mrc.maxSelection);
 
         for(int x = dresult.x; x <= dresult.x2; x++){
             for(int y = dresult.y; y <= dresult.y2; y++){
@@ -210,34 +207,6 @@ public class mrc extends Mod {
 
     private static void drawSelected(int x, int y, Block block, Color color) {
         Drawf.selected(x, y, block, color);
-    }
-
-    public static class calculation {
-        public final int xl;
-        public final int xr;
-        public final int yb;
-        public final int yt;
-
-        public String formattedMessage = "";
-
-        public calculation(int x1, int y1, int x2, int y2) {
-            xl = Math.min(x1, x2);
-            xr = Math.max(x1, x2);
-            yb = Math.min(y1, y2);
-            yt = Math.max(y1, y2);
-        }
-
-        public void calculate() {
-
-        }
-
-        public void callLabel() {
-            Vars.ui.showLabel(formattedMessage, 30, (xl + xr) * 4f, (yb - 5) * 8f);
-        }
-
-        public void callInfoMessage() {
-            Vars.ui.showInfo(formattedMessage);
-        }
     }
 
     public static void addBooleanGameSetting(String key, boolean defaultBooleanValue){
