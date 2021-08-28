@@ -230,8 +230,16 @@ public class calculator {
                 if (t.block() instanceof ReloadTurret rt) {
                     pc.rate = 60f / rt.reloadTime;
                 }
-                if (t.block() instanceof LiquidTurret lt) {
-                    //todo: add liquid turret support
+                if (t.block() instanceof LiquidTurret lt && t.build instanceof LiquidTurret.LiquidTurretBuild ltb) {
+                    float liquidUsage = 60f / lt.reloadTime;
+                    if (ltb.liquids.total() > 0) { //calculate liquid buff if has liquid
+                        pc.liquidUsage = ltb.liquids.current(); //current coolant
+                        BulletType type = lt.ammoTypes.get(ltb.liquids().current());
+                        pc.liquidUsageRate = liquidUsage / type.ammoMultiplier; //buff rate by liquid calculation
+                    } else if (!rateLimit) { //if calculate max flag for buff
+                        pc.liquidUsageRate = liquidUsage;
+                        pc.liquidAmmoTypes = lt.ammoTypes;
+                    }
                 } else if (t.block() instanceof Turret turret && t.build instanceof Turret.TurretBuild tb) {
                     if (tb.liquids.total() > 0) { //calculate liquid buff if has liquid
                         pc.liquidUsage = tb.liquids.current(); //current coolant
@@ -437,6 +445,7 @@ public class calculator {
         public boolean usesRadioactiveItem;
 
         public ObjectMap<Item, BulletType> ammoTypes;
+        public ObjectMap<Liquid, BulletType> liquidAmmoTypes;
         public float coolantMultiplier;
 
         public float powerConsumption;
@@ -761,7 +770,11 @@ public class calculator {
 
                 if (pc.liquidUsage == null && bestCoolant != null && pc.liquidUsageRate > 0f) { //should only happen on calculate max or repair point
                     pc.liquidUsage = bestCoolant;
-                    pc.rate *= 1 + ((pc.liquidUsageRate / 60f) * maxHeatCapacity * pc.coolantMultiplier); //buff rate by liquid calculation
+                    if (pc.liquidAmmoTypes != null) {
+                        pc.liquidUsageRate /= pc.liquidAmmoTypes.get(bestCoolant).ammoMultiplier;
+                    } else if (pc.coolantMultiplier > 0) {
+                        pc.rate *= 1 + ((pc.liquidUsageRate / 60f) * maxHeatCapacity * pc.coolantMultiplier); //buff rate by liquid calculation
+                    }
                 }
 
                 //add consumptions
