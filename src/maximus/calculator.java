@@ -264,11 +264,11 @@ public class calculator {
                 //misc.
                 if (t.block() instanceof OverdriveProjector op) {
                     if (op.consumes.has(ConsumeType.item) && op.consumes.get(ConsumeType.item) instanceof ConsumeItems ci) {
-                        itemConsumption(ci.items, op.useTime, !rateLimit || ci.isOptional());
+                        itemConsumption(ci.items, op.useTime, true);
                     }
                 } else if (t.block() instanceof MendProjector mp) {
                     if (mp.consumes.has(ConsumeType.item) && mp.consumes.get(ConsumeType.item) instanceof ConsumeItems ci) {
-                        itemConsumption(ci.items, mp.useTime, !rateLimit || ci.isOptional());
+                        itemConsumption(ci.items, mp.useTime, true);
                     }
                 }
                 apc.add(pc);
