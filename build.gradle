@@ -3,6 +3,7 @@ apply plugin: "java"
 version '1.0'
 
 sourceSets.main.java.srcDirs = ["src"]
+sourceCompatibility = JavaVersion.VERSION_17
 
 repositories{
     mavenCentral()
@@ -22,6 +23,7 @@ dependencies{
     annotationProcessor 'com.github.Anuken:jabel:34e4c172e65b3928cd9eabe1993654ea79c409cd'
     compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
     compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
+    implementation 'com.google.ortools:ortools-java:9.2.9972'
 }
 
 jar{
@@ -61,4 +63,8 @@ tasks.withType(JavaCompile){
     ])
     options.compilerArgs.addAll(['--release', '8'])
     compileJava.options.fork = true
+}
+
+tasks.named("jar") {
+    duplicatesStrategy = DuplicatesStrategy.WARN
 }
