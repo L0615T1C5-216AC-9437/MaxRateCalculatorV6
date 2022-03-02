@@ -3,6 +3,8 @@
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/downloads-pre/L0615T1C5-216AC-9437/MaxRateCalculatorV6/3.0-pa-0.1/total)  
 *A V7 Version of this mod can be found [here](https://github.com/L0615T1C5-216AC-9437/MaxRateCalculator).*
 
+# Old Mod below, several changes made in the last release
+
 # Max Rate Calculator
 A mindustry mod that allows you to calculate the efficiency, bottle neck and ratios of your machinations.  
 *may or may not work with modded items / blocks*
