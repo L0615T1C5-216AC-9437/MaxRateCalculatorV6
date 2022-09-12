@@ -1,5 +1,6 @@
 [![Github All Releases](https://img.shields.io/github/downloads/L0615T1C5-216AC-9437/MaxRateCalculatorV6/total.svg)]()
 ![GitHub issues](https://img.shields.io/github/issues/L0615T1C5-216AC-9437/MaxRateCalculatorV6)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/downloads-pre/L0615T1C5-216AC-9437/MaxRateCalculatorV6/1.5.1/total) 
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/downloads-pre/L0615T1C5-216AC-9437/MaxRateCalculatorV6/3.0-pa-0.1/total)  
 *A V7 Version of this mod can be found [here](https://github.com/L0615T1C5-216AC-9437/MaxRateCalculator).*
 
